@@ -21,10 +21,10 @@ export class Product {
   name: string;
 
   @Column()
-  price: string;
+  price: number;
 
   @Column()
-  volume: string;
+  volume: number;
 
   @CreateDateColumn()
   createdAt: string;
