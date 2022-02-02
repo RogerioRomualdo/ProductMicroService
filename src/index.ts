@@ -31,6 +31,11 @@ createConnection()
     const proto: any = loadProto();
     const server = new Server();
 
+    (await import("./infra/injectors/Product")).default(
+      server,
+      proto.ProductService.service
+    );
+
     server.bindAsync(
       `${process.env.DB_HOST}:${port}`,
       ServerCredentials.createInsecure(),
