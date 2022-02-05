@@ -36,6 +36,9 @@ export class ProductService implements IProductService {
       "updatedAt",
     ]);
 
+    if (!productData.createdAt) delete productData.createdAt;
+    if (!productData.updatedAt) delete productData.updatedAt;
+
     if (validationError) return validationError;
 
     const product = await this.productRepository.findById(productId);
