@@ -14,4 +14,5 @@ export interface IProductService {
   ) => Promise<Product | Error>;
   show: (productId: string) => Promise<Product | Error>;
   delete: (productId: string) => Promise<void | Error>;
+  getProductsByIds: (productIds: Array<string>) => Promise<ProductList>;
 }

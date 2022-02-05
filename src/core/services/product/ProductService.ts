@@ -11,7 +11,13 @@ export class ProductService implements IProductService {
   }
 
   create = async (productData: ProductDTO) => {
-    const validationError = this.validator.ValidateFalsyFields(productData);
+    const validationError = this.validator.ValidateFalsyFields(productData, [
+      "createdAt",
+      "updatedAt",
+    ]);
+
+    if (!productData.createdAt) delete productData.createdAt;
+    if (!productData.updatedAt) delete productData.updatedAt;
 
     if (validationError) return validationError;
 
@@ -21,7 +27,10 @@ export class ProductService implements IProductService {
     return await this.productRepository.index(options);
   };
   update = async (productId: string, productData: Partial<ProductDTO>) => {
-    const validationError = this.validator.ValidateFalsyFields(productData);
+    const validationError = this.validator.ValidateFalsyFields(productData, [
+      "createdAt",
+      "updatedAt",
+    ]);
 
     if (validationError) return validationError;
 
@@ -44,5 +53,8 @@ export class ProductService implements IProductService {
     if (!product) return new Error("Product not found");
 
     await this.productRepository.delete(product.id);
+  };
+  getProductsByIds = async (productIds: Array<string>) => {
+    return await this.productRepository.getProductsByIds(productIds);
   };
 }
