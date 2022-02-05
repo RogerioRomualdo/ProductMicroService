@@ -4,8 +4,8 @@ export interface Product {
   name: string;
   price: number;
   volume: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export type ProductDTO = Omit<Product, "id">;
