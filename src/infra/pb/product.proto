@@ -10,6 +10,10 @@ message Product {
   string updatedAt = 7;
 }
 
+message ProductIds {
+  repeated string productIds = 1;
+}
+
 message ProductList {
   uint64 count = 1;
   repeated Product products = 2;
@@ -41,4 +45,5 @@ service ProductService {
   rpc createProduct(NonGeneratedProductDTO) returns (Product);
   rpc updateProduct(Product) returns (Product);
   rpc deleteProduct(ProductId) returns (Void);
+  rpc getProductsByIds(ProductIds) returns (ProductList);
 }

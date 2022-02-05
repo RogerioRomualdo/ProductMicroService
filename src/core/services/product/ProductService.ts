@@ -2,16 +2,26 @@ import { IProductRepository } from "../../repositories/product/IProductRepositor
 import { ProductDTO, paginationOptions, ProductList } from "../../types";
 import { IProductService } from "./IProductService";
 import { Validator } from "../../../utils/validator";
+import { IPharmacyClient } from "../../gateways/pharmacy/IPharmacy";
 
 export class ProductService implements IProductService {
   private validator;
 
-  constructor(private productRepository: IProductRepository) {
+  constructor(
+    private productRepository: IProductRepository,
+    private pharmacyClient: IPharmacyClient
+  ) {
     this.validator = new Validator();
   }
 
   create = async (productData: ProductDTO) => {
-    const validationError = this.validator.ValidateFalsyFields(productData);
+    const validationError = this.validator.ValidateFalsyFields(productData, [
+      "createdAt",
+      "updatedAt",
+    ]);
+
+    if (!productData.createdAt) delete productData.createdAt;
+    if (!productData.updatedAt) delete productData.updatedAt;
 
     if (validationError) return validationError;
 
@@ -21,7 +31,10 @@ export class ProductService implements IProductService {
     return await this.productRepository.index(options);
   };
   update = async (productId: string, productData: Partial<ProductDTO>) => {
-    const validationError = this.validator.ValidateFalsyFields(productData);
+    const validationError = this.validator.ValidateFalsyFields(productData, [
+      "createdAt",
+      "updatedAt",
+    ]);
 
     if (validationError) return validationError;
 
@@ -44,5 +57,10 @@ export class ProductService implements IProductService {
     if (!product) return new Error("Product not found");
 
     await this.productRepository.delete(product.id);
+
+    await this.pharmacyClient.unlinkProductFromAllPharmacies(product.id);
+  };
+  getProductsByIds = async (productIds: Array<string>) => {
+    return await this.productRepository.getProductsByIds(productIds);
   };
 }
