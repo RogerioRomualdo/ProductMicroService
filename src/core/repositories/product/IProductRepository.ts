@@ -14,4 +14,5 @@ export interface IProductRepository {
     productData: Partial<ProductDTO>
   ) => Promise<Product>;
   delete: (productId: string) => Promise<void>;
+  getProductsByIds: (productIds: Array<string>) => Promise<ProductList>;
 }
