@@ -16,4 +16,5 @@ export interface IProductController {
   createProduct: RpcFunction;
   updateProduct: RpcFunction;
   deleteProduct: RpcFunction;
+  getProductsByIds: RpcFunction;
 }
