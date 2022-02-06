@@ -17,6 +17,10 @@ describe("Product Controller", () => {
       [productId: string, productData: Partial<ProductDTO>]
     >(),
     delete: jest.fn<Promise<void | Error>, [productId: string]>(),
+    getProductsByIds: jest.fn<
+      Promise<ProductList>,
+      [productIds: Array<string>]
+    >(),
   };
 
   const productController = new ProductController(MockProductService);

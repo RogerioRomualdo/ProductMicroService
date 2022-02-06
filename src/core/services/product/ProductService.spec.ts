@@ -6,6 +6,7 @@ import {
 } from "../../types";
 import { ProductService } from "./ProductService";
 import { returnAValidProduct } from "../../../utils/test";
+import { PharmacyClient } from "../../gateways/pharmacy/Pharmacy";
 
 describe("Product service", () => {
   const MockPhramacyRepository = {
@@ -17,9 +18,23 @@ describe("Product service", () => {
       [productId: string, productData: Partial<ProductDTO>]
     >(),
     delete: jest.fn<Promise<void>, [phramacyId: string]>(),
+    getProductsByIds: jest.fn<
+      Promise<ProductList>,
+      [productIds: Array<string>]
+    >(),
   };
 
-  const productService = new ProductService(MockPhramacyRepository);
+  const MockPharmacyClient = {
+    unlinkProductFromAllPharmacies: jest.fn<
+      Promise<void>,
+      [productId: string]
+    >(),
+  };
+
+  const productService = new ProductService(
+    MockPhramacyRepository,
+    MockPharmacyClient
+  );
 
   it("should be defined", () => {
     expect(productService).toBeDefined();
